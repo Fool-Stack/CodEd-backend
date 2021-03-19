@@ -5,6 +5,9 @@ const helmet = require("helmet");
 const cors = require("cors");
 require("dotenv").config();
 const app = express();
+var morgan = require("morgan");
+
+app.use(morgan("combined"));
 
 app.set('trust proxy', 1);
 var limiter = new rateLimit({
@@ -14,6 +17,7 @@ var limiter = new rateLimit({
  "Too many requests created from this IP, please try again after an hour",
 });
 app.use(limiter)
+const logResponseBody = require("./utils/logResponse");
 //Require Atlas database URI from environment variables
 const DBURI = process.env.DBURI;
 //Connect to MongoDB client using mongoose
@@ -34,6 +38,9 @@ app.use(helmet());
 //Use body-parser to parse json body
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.use(logResponseBody)
+
 // Allow CORS
 app.use((req, res, next) => {
 res.header("Access-Control-Allow-Origin", "*");
