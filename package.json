@@ -1,0 +1,26 @@
+{
+  "name": "coded-backend",
+  "version": "1.0.0",
+  "description": "backend for codEd",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fool-Stack/CodEd-backend.git"
+  },
+  "author": "Shivam Jugal",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Fool-Stack/CodEd-backend/issues"
+  },
+  "homepage": "https://github.com/Fool-Stack/CodEd-backend#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^4.4.1",
+    "mongoose": "^5.12.1"
+  }
+}
