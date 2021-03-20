@@ -118,3 +118,53 @@ exports.deleteCourse = async (req, res) => {
 };
 
 
+exports.enroll = async (req,res)=>{
+  const {userId} = req.user
+  const {courseId} = req.body
+
+   User.findById(userId).then(async(user)=>{
+
+   user.courses.forEach((course)=>{
+     if(course==courseId){
+       return res.status(400).json({
+         success:false,
+         message:'Already enrolled'
+       })
+     }
+   })
+
+   await User.updateOne({_id:userId},{$addToSet:{courses:courseId}})
+    .then(async ()=>{
+
+      await Course.updateOne({_id:courseId},{$addToSet:{students:userId}})
+        .then(()=>{
+          res.status(200).json({
+            success:true,
+            message:'Successfully enrolled'
+          })
+        }).catch((err)=>{
+          res.status(500).json({
+            success: false,
+            message: "Something went wrong",
+            err: err.toString(),
+          });
+        })
+
+    }).catch((err)=>{
+      res.status(500).json({
+        success: false,
+        message: "Something went wrong",
+        err: err.toString(),
+      });
+    })
+  })
+  .catch((err)=>{
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+      err: err.toString(),
+    });
+  })
+
+}
+

@@ -186,7 +186,7 @@ exports.login = async (req, res) => {
           const token = jwt.sign(
             {
               instructorId: instructor[0]._id,
-              type: instructor[0].type,
+              type: 'instructor',
             },
             process.env.JWT_SECRET,
             {
