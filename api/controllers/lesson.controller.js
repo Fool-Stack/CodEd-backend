@@ -62,7 +62,7 @@ exports.addVideo = async (req, res) => {
 
 
 exports.addLessonWithoutVideo = async (req, res) => {
-  const { course, description, title, events, language } = req.body;
+  const { course, description, title, language } = req.body;
 
   const lesson = new Lesson({
     _id: new mongoose.Types.ObjectId(),
@@ -70,7 +70,6 @@ exports.addLessonWithoutVideo = async (req, res) => {
     description,
     instructor: req.user.userId,
     title,
-    events,
     language,
     timestamp: Date.now(),
   });
