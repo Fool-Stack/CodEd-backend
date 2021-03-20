@@ -7,7 +7,7 @@ const checkAuthAdmin = require("../middlewares/checkAuthAdmin");
 
 const router = express.Router();
 
-router.post("/add", checkAuthAdmin, courseCntroller.addCourse);
+router.post("/add", checkAuthAdmin, upload.single("image"), courseCntroller.addCourse);
 
 router.get("/all", checkAuth, courseCntroller.getAllCourses);
 
