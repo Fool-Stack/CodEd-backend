@@ -22,6 +22,8 @@ router.post(
   lessonController.checkEnrolled
 );
 
+router.post('/addVideo', checkAuthAdmin, upload.single('video'), lessonController.addVideo);
+
 router.delete("/deleteLesson", checkAuthAdmin, lessonController.deleteLesson)
 
 router.post("/code",checkAuth,code.submit )

@@ -35,6 +35,32 @@ exports.addLesson = async (req, res) => {
     });
 };
 
+exports.addVideo = async (req, res) => {
+  const { id } = req.body;
+  const lesson = await Lesson.updateOne(
+    {
+      _id: id,
+    },
+    {
+      video: req.file.location
+    }
+  )
+    .then((updatedLesson) => {
+      return res.status(200).json({
+        success: true,
+        message: "updated Successfully",
+      });
+    })
+    .catch((err) => {
+      return res.status(500).json({
+        success: false,
+        message: "Something went wrong",
+        err: err.toString(),
+      });
+    });
+};
+
+
 exports.addLessonWithoutVideo = async (req, res) => {
   const { course, description, title, events } = req.body;
 
