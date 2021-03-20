@@ -75,23 +75,23 @@ app.use((error, req, res, next) => {
 const PORT = process.env.PORT || 3000;
 //Start the server
 
-const httpServer = http.createServer(app);
-let server = httpServer.listen(process.env.PORT || 3000, () => {
-	console.log(`Server running of ${PORT}`);
-});
-
-const io = socket(server);
-// app.listen(PORT, () => {
-//   console.log(`Listening on port ${PORT}`);
+// const httpServer = http.createServer(app);
+// let server = httpServer.listen(process.env.PORT || 3000, () => {
+// 	console.log(`Server running of ${PORT}`);
 // });
 
-io.on('connection', socket => {
-  socket.on('join-room', (roomId, userId) => {
-    socket.join(roomId)
-    socket.to(roomId).broadcast.emit('user-connected', userId)
+// const io = socket(server);
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+});
 
-    socket.on('disconnect', () => {
-      socket.to(roomId).broadcast.emit('user-disconnected', userId)
-    })
-  })
-})
+// io.on('connection', socket => {
+//   socket.on('join-room', (roomId, userId) => {
+//     socket.join(roomId)
+//     socket.to(roomId).broadcast.emit('user-connected', userId)
+
+//     socket.on('disconnect', () => {
+//       socket.to(roomId).broadcast.emit('user-disconnected', userId)
+//     })
+//   })
+// })
