@@ -7,7 +7,8 @@ const courseSchema = new mongoose.Schema({
   price: { type: Number },
   numberOfLessons: { type: Number },
   timestamp: { type: Date },
-  students:{type:Array}
+  students:{type:Array},
+  img:{type:String}
 });
 
 module.exports = mongoose.model("Course", courseSchema);

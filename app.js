@@ -5,6 +5,8 @@ const helmet = require("helmet");
 const cors = require("cors");
 require("dotenv").config();
 const app = express();
+const http = require('https')
+const socket = require('socket.io')
 var morgan = require("morgan");
 
 app.use(morgan("combined"));
@@ -72,6 +74,24 @@ app.use((error, req, res, next) => {
 });
 const PORT = process.env.PORT || 3000;
 //Start the server
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
+
+const httpServer = http.createServer(app);
+let server = httpServer.listen(process.env.PORT || 3000, () => {
+	console.log(`Server running of ${PORT}`);
 });
+
+const io = socket(server);
+// app.listen(PORT, () => {
+//   console.log(`Listening on port ${PORT}`);
+// });
+
+io.on('connection', socket => {
+  socket.on('join-room', (roomId, userId) => {
+    socket.join(roomId)
+    socket.to(roomId).broadcast.emit('user-connected', userId)
+
+    socket.on('disconnect', () => {
+      socket.to(roomId).broadcast.emit('user-disconnected', userId)
+    })
+  })
+})
