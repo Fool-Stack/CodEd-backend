@@ -8,6 +8,7 @@ const lessonSchema = new mongoose.Schema({
   video: { type: String },
   events: { type: Array },
   timestamp: { type: Date },
+  language: { type :String },
 });
 
 module.exports = mongoose.model("Lesson", lessonSchema);

@@ -62,7 +62,7 @@ exports.addVideo = async (req, res) => {
 
 
 exports.addLessonWithoutVideo = async (req, res) => {
-  const { course, description, title, events } = req.body;
+  const { course, description, title, events, language } = req.body;
 
   const lesson = new Lesson({
     _id: new mongoose.Types.ObjectId(),
@@ -71,6 +71,7 @@ exports.addLessonWithoutVideo = async (req, res) => {
     instructor: req.user.userId,
     title,
     events,
+    language,
     timestamp: Date.now(),
   });
 
@@ -93,7 +94,7 @@ exports.addLessonWithoutVideo = async (req, res) => {
 };
 
 exports.updateLesson = async (req, res) => {
-  const { id, course, description, title, events } = req.body;
+  const { id, course, description, title, events, language } = req.body;
 
   const lesson = await Lesson.updateOne(
     {
@@ -105,6 +106,7 @@ exports.updateLesson = async (req, res) => {
       instructor: req.user.userId,
       title,
       events,
+      language,
       timestamp: Date.now(),
     }
   )
