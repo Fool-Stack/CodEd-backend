@@ -97,6 +97,23 @@ exports.updateLesson = async (req, res) => {
     });
 };
 
+exports.getAllLessons = async (req, res) => {
+  const { id } = req.body;
+  const lessons = await Lesson.find({course:id});
+  if (lessons) {
+    return res.status(200).json({
+      success: true,
+      message: "Retrieved Successfully",
+      lesson: lessons,
+    });
+  } else {
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
 exports.getLesson = async (req, res) => {
   const { id } = req.body;
   const lesson = await Lesson.findById(id);
