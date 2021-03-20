@@ -23,7 +23,7 @@ exports.addLesson = async (req, res) => {
         success: true,
         message: "Created Successfully",
         lesson: savedLesson,
-      })
+      });
     })
     .catch((err) => {
       return res.status(500).json({
@@ -54,7 +54,7 @@ exports.addLessonWithoutVideo = async (req, res) => {
         success: true,
         message: "Created Successfully",
         lesson: savedLesson,
-      })
+      });
     })
     .catch((err) => {
       return res.status(500).json({
@@ -64,3 +64,57 @@ exports.addLessonWithoutVideo = async (req, res) => {
       });
     });
 };
+
+exports.updateLesson = async (req, res) => {
+  const {id, course, description, instructor, title, events } = req.body;
+
+  const lesson = await Lesson.updateOne({
+    _id: id
+  },{
+    course,
+    description,
+    instructor,
+    title,
+    events,
+    timestamp: Date.now(),
+  }).then((updatedLesson) => {
+      return res.status(200).json({
+        success: true,
+        message: "updated Successfully",
+      });
+    })
+    .catch((err) => {
+      return res.status(500).json({
+        success: false,
+        message: "Something went wrong",
+        err: err.toString(),
+      });
+    });
+};
+
+
+exports.getLesson = async(req, res) => {
+  const { id } = req.body;
+  const lesson = await Lesson.findById(id);
+  if(lesson){
+    return res.status(200).json({
+      success: true,
+      message: "Created Successfully",
+      lesson: lesson,
+    });
+  }else{
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+      err: err.toString(),
+    });
+  }
+}
+
+exports.deleteLesson = async (req, res) => {
+
+}
+
+exports.checkEnrolled = async (req, res) => {
+  
+}

@@ -9,21 +9,21 @@ var morgan = require("morgan");
 
 app.use(morgan("combined"));
 
-app.set('trust proxy', 1);
+app.set("trust proxy", 1);
 const logResponseBody = require("./utils/logResponse");
 //Require Atlas database URI from environment variables
 const DBURI = process.env.DB_URI;
 //Connect to MongoDB client using mongoose
 mongoose
- .connect(DBURI, {
-useNewUrlParser: true,
-useCreateIndex: true,
-useUnifiedTopology: true,
-useFindAndModify: false,
-})
- .then(() => console.log("Database Connected"))
-.catch((err) => {
-  console.log(err)
+  .connect(DBURI, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
+  .then(() => console.log("Database Connected"))
+  .catch((err) => {
+    console.log(err);
   });
 mongoose.Promise = global.Promise;
 //Use helmet to prevent common security vulnerabilities
@@ -32,18 +32,18 @@ app.use(helmet());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use(logResponseBody)
+app.use(logResponseBody);
 
 // Allow CORS
 app.use((req, res, next) => {
-res.header("Access-Control-Allow-Origin", "*");
-res.header(
-"Access-Control-Allow-Headers",
- "Origin, X-Requested-With, Content-Type, Accept, Authorization, auth-token"
-);
-if (req.method === "OPTIONS") {
- res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
-   return res.status(200).json({});
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization, auth-token"
+  );
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+    return res.status(200).json({});
   }
   next();
 });
@@ -53,22 +53,23 @@ app.get("/checkServer", (req, res) => {
     message: "Server is up and running",
   });
 });
+app.use('/lesson', require('./api/routers/lesson.routes'))
 //This function will give a 404 response if an undefined API endpoint is fired
 app.use((req, res, next) => {
-const error = new Error("Route not found");
- error.status = 404;
-next(error);
+  const error = new Error("Route not found");
+  error.status = 404;
+  next(error);
 });
 app.use((error, req, res, next) => {
-res.status(error.status || 500);
-res.json({
-error: {
- message: error.message,
-},
- });
+  res.status(error.status || 500);
+  res.json({
+    error: {
+      message: error.message,
+    },
+  });
 });
 const PORT = process.env.PORT || 3000;
 //Start the server
 app.listen(PORT, () => {
- console.log(`Listening on port ${PORT}`);
+  console.log(`Listening on port ${PORT}`);
 });
