@@ -10,16 +10,9 @@ var morgan = require("morgan");
 app.use(morgan("combined"));
 
 app.set('trust proxy', 1);
-var limiter = new rateLimit({
- windowMs: 1 * 60 * 1000,
-  max: 60,
- message:
- "Too many requests created from this IP, please try again after an hour",
-});
-app.use(limiter)
 const logResponseBody = require("./utils/logResponse");
 //Require Atlas database URI from environment variables
-const DBURI = process.env.DBURI;
+const DBURI = process.env.DB_URI;
 //Connect to MongoDB client using mongoose
 mongoose
  .connect(DBURI, {
@@ -30,7 +23,7 @@ useFindAndModify: false,
 })
  .then(() => console.log("Database Connected"))
 .catch((err) => {
-errorLogger.error(`System: NIL >> ${err.toString()}`);
+  console.log(err)
   });
 mongoose.Promise = global.Promise;
 //Use helmet to prevent common security vulnerabilities
@@ -55,19 +48,6 @@ if (req.method === "OPTIONS") {
   next();
 });
 app.use(cors());
-app.use(useragent.express());
-if (global.env.NODE_ENV == "production") {
- app.use((req, res, next) => {
- if (req.useragent["isBot"] == false) {
-next();
-} else {
-res.status(401).json({
- message:
-          "Please try using a different browser: Interception is blocked",
-     });
-   }
-  });
-}
 app.get("/checkServer", (req, res) => {
   return res.status(200).json({
     message: "Server is up and running",
@@ -90,5 +70,5 @@ error: {
 const PORT = process.env.PORT || 3000;
 //Start the server
 app.listen(PORT, () => {
- console.log(`Listening on port PORT`);
+ console.log(`Listening on port ${PORT}`);
 });
