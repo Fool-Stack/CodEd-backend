@@ -53,8 +53,9 @@ app.get("/checkServer", (req, res) => {
     message: "Server is up and running",
   });
 });
-app.use('/lesson', require('./api/routers/lesson.routes'))
-app.use('/user',require('./api/routers/user.routes'))
+app.use("/lesson", require("./api/routers/lesson.routes"));
+app.use("/user", require("./api/routers/user.routes"));
+app.use("/course", require("./api/routers/course.routes"));
 //This function will give a 404 response if an undefined API endpoint is fired
 app.use((req, res, next) => {
   const error = new Error("Route not found");

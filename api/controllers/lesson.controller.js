@@ -103,7 +103,7 @@ exports.getLesson = async (req, res) => {
   if (lesson) {
     return res.status(200).json({
       success: true,
-      message: "Created Successfully",
+      message: "Retrieved Successfully",
       lesson: lesson,
     });
   } else {
