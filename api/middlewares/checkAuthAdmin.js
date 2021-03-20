@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
   try {
     const verified = jwt.verify(token, process.env.JWT_SECRET);
     req.user = verified;
-    if (req.user.type == "Instructor") {
+    if (req.user.type == "instructor") {
       next();
     } else {
       return res.status(403).json({
