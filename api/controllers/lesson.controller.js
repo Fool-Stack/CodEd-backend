@@ -1,15 +1,16 @@
 const Lesson = require("../models/lesson");
+const User = require("../models/user");
 
 const mongoose = require("mongoose");
 
 exports.addLesson = async (req, res) => {
-  const { course, description, instructor, title, events } = req.body;
+  const { course, description, title, events } = req.body;
 
   const lesson = new Lesson({
     _id: new mongoose.Types.ObjectId(),
     course,
     description,
-    instructor,
+    instructor: req.user.userId,
     title,
     events,
     timestamp: Date.now(),
@@ -35,13 +36,13 @@ exports.addLesson = async (req, res) => {
 };
 
 exports.addLessonWithoutVideo = async (req, res) => {
-  const { course, description, instructor, title, events } = req.body;
+  const { course, description, title, events } = req.body;
 
   const lesson = new Lesson({
     _id: new mongoose.Types.ObjectId(),
     course,
     description,
-    instructor,
+    instructor: req.user.userId,
     title,
     events,
     timestamp: Date.now(),
@@ -66,18 +67,22 @@ exports.addLessonWithoutVideo = async (req, res) => {
 };
 
 exports.updateLesson = async (req, res) => {
-  const {id, course, description, instructor, title, events } = req.body;
+  const { id, course, description, title, events } = req.body;
 
-  const lesson = await Lesson.updateOne({
-    _id: id
-  },{
-    course,
-    description,
-    instructor,
-    title,
-    events,
-    timestamp: Date.now(),
-  }).then((updatedLesson) => {
+  const lesson = await Lesson.updateOne(
+    {
+      _id: id,
+    },
+    {
+      course,
+      description,
+      instructor: req.user.userId,
+      title,
+      events,
+      timestamp: Date.now(),
+    }
+  )
+    .then((updatedLesson) => {
       return res.status(200).json({
         success: true,
         message: "updated Successfully",
@@ -92,29 +97,63 @@ exports.updateLesson = async (req, res) => {
     });
 };
 
-
-exports.getLesson = async(req, res) => {
+exports.getLesson = async (req, res) => {
   const { id } = req.body;
   const lesson = await Lesson.findById(id);
-  if(lesson){
+  if (lesson) {
     return res.status(200).json({
       success: true,
       message: "Created Successfully",
       lesson: lesson,
     });
-  }else{
+  } else {
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
-      err: err.toString(),
     });
   }
-}
+};
 
 exports.deleteLesson = async (req, res) => {
-
-}
+  const { id } = req.body;
+  await Lesson.deleteOne({
+    _id: id,
+  })
+    .then((deleted) => {
+      return res.status(200).json({
+        success: true,
+        message: "Deleted Successfully",
+      });
+    })
+    .catch((err) => {
+      return res.status(500).json({
+        success: false,
+        message: "Something went wrong",
+        err: err.toString(),
+      });
+    });
+};
 
 exports.checkEnrolled = async (req, res) => {
-  
-}
+  const user = await User.findById(req.user.userId)
+  const { courseId } = req.body;
+  let flag = 0
+  if(user){
+    for(let course of user.courses){
+      if(courseId == course){
+        flag =1
+      }
+    }
+    if(flag == 1){
+      return res.status(200).json({
+        success: true,
+        message: "User is valid"
+      })
+    }else{
+      return res.status(403).json({
+        success: false,
+        message: "User is invalid"
+      })
+    }
+  }
+};

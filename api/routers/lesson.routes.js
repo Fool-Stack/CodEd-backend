@@ -7,11 +7,11 @@ const checkAuthAdmin = require("../middlewares/checkAuthAdmin");
 
 const router = express.Router();
 
-router.post("/addLesson", checkAuth, upload.single('video'), lessonController.addLesson);
+router.post("/addLesson", checkAuthAdmin, upload.single('video'), lessonController.addLesson);
 
-router.post("/addLessonWithoutVideo", checkAuth, lessonController.addLessonWithoutVideo);
+router.post("/addLessonWithoutVideo", checkAuthAdmin, lessonController.addLessonWithoutVideo);
 
-router.patch("/updateLesson", checkAuth, lessonController.updateLesson);
+router.patch("/updateLesson", checkAuthAdmin, lessonController.updateLesson);
 
 router.post("/getLesson", checkAuth, lessonController.getLesson);
 
