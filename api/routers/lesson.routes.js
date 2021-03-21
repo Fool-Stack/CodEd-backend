@@ -15,7 +15,7 @@ router.patch("/update", checkAuthAdmin, lessonController.updateLesson);
 
 router.get("/get", checkAuth, lessonController.getLesson);
 
-router.get("/all",checkAuth,lessonController.getAllLessons)
+router.post("/all",checkAuth,lessonController.getAllLessons)
 router.post(
   "/checkEnrolled",
   checkAuth,
