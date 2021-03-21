@@ -14,7 +14,6 @@ exports.addCourse = async (req, res) => {
     timestamp: Date.now(),
     price,
     numberOfLessons,
-    img: req.file.location,
   });
 
   await course
