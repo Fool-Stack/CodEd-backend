@@ -13,7 +13,7 @@ router.post("/withoutVideo", checkAuthAdmin, lessonController.addLessonWithoutVi
 
 router.patch("/update", checkAuthAdmin, lessonController.updateLesson);
 
-router.get("/get", checkAuth, lessonController.getLesson);
+router.post("/get", checkAuth, lessonController.getLesson);
 
 router.post("/all",checkAuth,lessonController.getAllLessons)
 router.post(
