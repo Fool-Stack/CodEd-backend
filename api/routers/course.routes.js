@@ -13,7 +13,7 @@ router.get("/all", checkAuth, courseCntroller.getAllCourses);
 
 router.patch("/update", checkAuthAdmin, courseCntroller.updateCourse);
 
-router.get("/one", checkAuth, courseCntroller.getCourse);
+router.post("/one", checkAuth, courseCntroller.getCourse);
 
 router.delete("/delete", checkAuthAdmin, courseCntroller.deleteCourse)
 
