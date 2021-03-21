@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 
 exports.addCourse = async (req, res) => {
   const { description, title, price, numberOfLessons } = req.body;
-
+  console.log(req.body);
   const course = new Course({
     _id: new mongoose.Types.ObjectId(),
     description,
